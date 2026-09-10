@@ -172,15 +172,15 @@ export const team: TeamMember[] = [
   },
   {
     name: "Furaha Balozi",
-    role: "Chief Operating Officer (COO)",
+    role: "Chief Marketing Officer (CMO) & Code Master",
     description:
-      "Oversees daily operations, coordinates the team, and ensures smooth execution.",
+      "Leads marketing strategy and brand direction while bringing hands-on engineering mastery to the team's technical work.",
     responsibilities: [
-      "Operations",
-      "Team coordination",
-      "Workflow",
-      "Execution",
-      "Operational efficiency",
+      "Marketing strategy",
+      "Brand direction",
+      "Growth & outreach",
+      "Hands-on development",
+      "Code quality",
     ],
     image: furahaImg,
   },
