@@ -12,14 +12,6 @@ export default function TeamMemberCard({ member, index }: { member: TeamMember; 
             alt={member.name}
             className="h-full w-full object-cover object-top transition-transform duration-700 ease-out group-hover:scale-105"
           />
-          <div
-            className="absolute inset-0"
-            style={{
-              background:
-                "radial-gradient(ellipse 62% 58% at 50% 36%, transparent 0%, transparent 38%, rgba(6,10,21,0.55) 72%, rgba(3,5,10,0.96) 100%)",
-            }}
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-navy-950 via-navy-950/15 to-transparent" />
           <div className="absolute inset-0 bg-gradient-to-b from-royal-500/10 via-transparent to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
         </div>
 
