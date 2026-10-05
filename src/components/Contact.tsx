@@ -50,11 +50,38 @@ export default function Contact() {
     const mailto = `mailto:${companyEmail}?subject=${encodeURIComponent(
       form.subject
     )}&body=${encodeURIComponent(body)}`;
-    window.location.href = mailto;
 
+    // Show success immediately so the UI never waits on the OS mail-client
+    // handshake, which can stall for a moment (or never resolve at all
+    // inside a sandboxed preview).
     setSent(true);
     setForm(initialState);
-    setTimeout(() => setSent(false), 5000);
+    setTimeout(() => setSent(false), 6000);
+
+    // Best-effort copy, so the message is never lost even if no mail
+    // client responds.
+    navigator.clipboard
+      ?.writeText(`To: ${companyEmail}\nSubject: ${form.subject}\n\n${body}`)
+      .catch(() => {});
+
+    // Trigger via a detached link click rather than window.location —
+    // doesn't block or navigate the page itself, and survives sandboxed
+    // contexts (like an embedded preview) better than a direct location
+    // change, which those commonly block outright.
+    requestAnimationFrame(() => {
+      try {
+        const link = document.createElement("a");
+        link.href = mailto;
+        link.rel = "noopener noreferrer";
+        link.style.display = "none";
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      } catch {
+        // Mail client launch isn't available here — the clipboard copy
+        // above is the fallback.
+      }
+    });
   };
 
   const fieldClasses = (field: keyof FormState) =>
@@ -171,9 +198,12 @@ export default function Contact() {
                 </button>
 
                 {sent && (
-                  <div className="flex items-center gap-2 text-sm text-royal-300">
-                    <CheckCircle2 className="h-4 w-4" />
-                    Opening your email client to send this to {companyEmail}...
+                  <div className="flex items-start gap-2 text-sm text-royal-300">
+                    <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0" />
+                    <span>
+                      Opening your email client to send this to {companyEmail} — we
+                      also copied the message to your clipboard, just in case.
+                    </span>
                   </div>
                 )}
               </form>
