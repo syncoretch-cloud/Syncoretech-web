@@ -14,12 +14,15 @@ type FormState = {
 
 type Errors = Partial<Record<keyof FormState, string>>;
 
+const CONTACT_API_URL = import.meta.env.VITE_CONTACT_API_URL || "/api/contact";
+
 const initialState: FormState = { name: "", email: "", subject: "", message: "" };
 
 export default function Contact() {
   const [form, setForm] = useState<FormState>(initialState);
   const [errors, setErrors] = useState<Errors>({});
-  const [sent, setSent] = useState(false);
+  const [sending, setSending] = useState(false);
+  const [status, setStatus] = useState<"idle" | "sent" | "error">("idle");
 
   const validate = (values: FormState): Errors => {
     const next: Errors = {};
@@ -40,48 +43,30 @@ export default function Contact() {
     setForm((prev) => ({ ...prev, [field]: e.target.value }));
   };
 
-  const handleSubmit = (e: FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
+    if (sending) return;
     const validation = validate(form);
     setErrors(validation);
     if (Object.keys(validation).length > 0) return;
 
-    const body = `Name: ${form.name}\nEmail: ${form.email}\n\n${form.message}`;
-    const mailto = `mailto:${companyEmail}?subject=${encodeURIComponent(
-      form.subject
-    )}&body=${encodeURIComponent(body)}`;
-
-    // Show success immediately so the UI never waits on the OS mail-client
-    // handshake, which can stall for a moment (or never resolve at all
-    // inside a sandboxed preview).
-    setSent(true);
-    setForm(initialState);
-    setTimeout(() => setSent(false), 6000);
-
-    // Best-effort copy, so the message is never lost even if no mail
-    // client responds.
-    navigator.clipboard
-      ?.writeText(`To: ${companyEmail}\nSubject: ${form.subject}\n\n${body}`)
-      .catch(() => {});
-
-    // Trigger via a detached link click rather than window.location —
-    // doesn't block or navigate the page itself, and survives sandboxed
-    // contexts (like an embedded preview) better than a direct location
-    // change, which those commonly block outright.
-    requestAnimationFrame(() => {
-      try {
-        const link = document.createElement("a");
-        link.href = mailto;
-        link.rel = "noopener noreferrer";
-        link.style.display = "none";
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-      } catch {
-        // Mail client launch isn't available here — the clipboard copy
-        // above is the fallback.
-      }
-    });
+    setSending(true);
+    setStatus("idle");
+    try {
+      const res = await fetch(CONTACT_API_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
+      });
+      if (!res.ok) throw new Error(`Request failed: ${res.status}`);
+      setStatus("sent");
+      setForm(initialState);
+      setTimeout(() => setStatus("idle"), 8000);
+    } catch {
+      setStatus("error");
+    } finally {
+      setSending(false);
+    }
   };
 
   const fieldClasses = (field: keyof FormState) =>
@@ -191,20 +176,24 @@ export default function Contact() {
 
                 <button
                   type="submit"
-                  className="group flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-royal-500 to-royal-600 px-6 py-3.5 text-sm font-semibold text-white shadow-[0_0_35px_-10px_rgba(61,110,242,0.8)] transition-transform duration-300 hover:-translate-y-0.5 sm:w-auto"
+                  disabled={sending}
+                  className="disabled:opacity-60 group flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-royal-500 to-royal-600 px-6 py-3.5 text-sm font-semibold text-white shadow-[0_0_35px_-10px_rgba(61,110,242,0.8)] transition-transform duration-300 hover:-translate-y-0.5 sm:w-auto"
                 >
-                  Send Message
+                  {sending ? "Sending..." : "Send Message"}
                   <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
                 </button>
 
-                {sent && (
+                {status === "sent" && (
                   <div className="flex items-start gap-2 text-sm text-royal-300">
                     <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0" />
-                    <span>
-                      Opening your email client to send this to {companyEmail} — we
-                      also copied the message to your clipboard, just in case.
-                    </span>
+                    <span>Thanks! Your message has been sent. We'll be in touch soon.</span>
                   </div>
+                )}
+                {status === "error" && (
+                  <p className="text-sm text-red-400">
+                    Something went wrong sending your message. Please email us directly at{" "}
+                    <a href={`mailto:${companyEmail}`} className="underline">{companyEmail}</a>.
+                  </p>
                 )}
               </form>
             </GlassPanel>
