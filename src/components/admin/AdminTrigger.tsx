@@ -1,5 +1,4 @@
 import { useRef, useState } from "react";
-import { Lock } from "lucide-react";
 import { useSite } from "../../context/SiteContent";
 import AdminLogin from "./AdminLogin";
 import AdminPanel from "./AdminPanel";
@@ -27,10 +26,8 @@ export default function AdminTrigger() {
         type="button"
         aria-label="Admin"
         onContextMenu={onContext}
-        className="flex h-8 w-8 items-center justify-center rounded-full bg-silver-300 text-black opacity-70 transition-opacity hover:opacity-100"
-      >
-        <Lock className="h-4 w-4" />
-      </button>
+        className="block h-3 w-3 rounded-full bg-silver-300 text-black opacity-70 transition-opacity hover:opacity-100"
+      />
       {open && (isAdmin ? <AdminPanel onClose={() => setOpen(false)} /> : <AdminLogin onClose={() => setOpen(false)} />)}
     </>
   );
