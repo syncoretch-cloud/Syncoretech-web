@@ -1,6 +1,6 @@
-// Vercel serverless function: relays contact-form submissions through Resend.
+// Netlify function: relays contact-form submissions through Resend.
 // Requires RESEND_API_KEY (and optionally CONTACT_TO_EMAIL, CONTACT_FROM_EMAIL)
-// to be set as environment variables in the Vercel project.
+// to be set as environment variables in the Netlify site settings.
 
 type Body = { name?: unknown; email?: unknown; subject?: unknown; message?: unknown };
 
@@ -9,8 +9,10 @@ const escapeHtml = (s: string) =>
 
 const str = (v: unknown, max: number) => (typeof v === "string" ? v.trim().slice(0, max) : "");
 
-export default {
-  async fetch(request: Request): Promise<Response> {
+export const config = { path: "/api/contact" };
+
+export default async (request: Request): Promise<Response> => {
+  {
     const headers = {
       "Content-Type": "application/json",
       "Access-Control-Allow-Origin": "*",
@@ -62,5 +64,5 @@ export default {
       return reply(502, { error: "Failed to send email" });
     }
     return reply(200, { ok: true });
-  },
+  }
 };

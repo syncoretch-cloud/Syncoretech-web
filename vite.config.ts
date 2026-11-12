@@ -3,7 +3,8 @@ import { defineConfig } from 'vite'
 
 // https://vite.dev/config/
 export default defineConfig(({ command }) => ({
-  base: command === 'build' ? '/syncore-technologies/' : '/',
+  // GitHub Pages serves from a sub-path; Netlify serves from the root.
+  base: command === 'build' && !process.env.NETLIFY ? '/syncore-technologies/' : '/',
   plugins: [react()],
   server: {
     allowedHosts: true,
