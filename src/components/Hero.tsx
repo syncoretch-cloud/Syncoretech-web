@@ -2,8 +2,10 @@ import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import logo from "../assets/logo.png";
 import GlassPanel from "./ui/GlassPanel";
+import { useSite } from "../context/SiteContent";
 
 export default function Hero() {
+  const { text } = useSite();
   const scrollTo = (href: string) =>
     document.querySelector(href)?.scrollIntoView({ behavior: "smooth" });
 
@@ -16,7 +18,7 @@ export default function Hero() {
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
         >
           <span className="mb-5 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.2em] text-royal-300">
-            Technology &amp; Digital Innovation
+            {text("hero.badge")}
           </span>
 
           <h1 className="font-display text-3xl font-bold leading-[1.1] text-silver-200 sm:text-4xl lg:text-5xl">
@@ -27,9 +29,7 @@ export default function Hero() {
           </h1>
 
           <p className="mt-6 max-w-xl text-base leading-relaxed text-silver-400 sm:text-lg">
-            Syncore Technologies is a technology and digital innovation company
-            that builds intelligent, integrated, reliable, and purposeful
-            technological solutions.
+            {text("hero.description")}
           </p>
 
           <div className="mt-9 flex flex-wrap items-center gap-4">

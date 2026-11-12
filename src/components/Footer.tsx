@@ -1,9 +1,11 @@
 import { Mail } from "lucide-react";
 import logo from "../assets/logo.png";
 import GlassPanel from "./ui/GlassPanel";
+import { useSite } from "../context/SiteContent";
 import { companyEmail, footerLinks } from "../data/content";
 
 export default function Footer() {
+  const { text } = useSite();
   const year = new Date().getFullYear();
 
   const scrollTo = (href: string) => (e: React.MouseEvent) => {
@@ -23,11 +25,10 @@ export default function Footer() {
               </span>
             </div>
             <p className="mt-4 text-sm font-semibold uppercase tracking-[0.2em] text-royal-300">
-              Technologies with Purpose.
+              {text("footer.tagline")}
             </p>
             <p className="mt-4 max-w-sm text-sm leading-relaxed text-silver-400">
-              We build technology with purpose, connecting ideas, systems, and
-              people through intelligent and integrated digital solutions.
+              {text("footer.description")}
             </p>
             <a
               href={`mailto:${companyEmail}`}

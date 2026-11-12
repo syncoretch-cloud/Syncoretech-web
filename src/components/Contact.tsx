@@ -3,6 +3,7 @@ import { Mail, ArrowRight, CheckCircle2 } from "lucide-react";
 import Reveal from "./ui/Reveal";
 import GlassPanel from "./ui/GlassPanel";
 import SectionHeading from "./ui/SectionHeading";
+import { useSite } from "../context/SiteContent";
 import { companyEmail } from "../data/content";
 
 type FormState = {
@@ -19,6 +20,7 @@ const CONTACT_API_URL = import.meta.env.VITE_CONTACT_API_URL || "/api/contact";
 const initialState: FormState = { name: "", email: "", subject: "", message: "" };
 
 export default function Contact() {
+  const { text } = useSite();
   const [form, setForm] = useState<FormState>(initialState);
   const [errors, setErrors] = useState<Errors>({});
   const [sending, setSending] = useState(false);
@@ -79,8 +81,8 @@ export default function Contact() {
       <div className="mx-auto max-w-6xl">
         <SectionHeading
           eyebrow="Get In Touch"
-          title="Let's Build Something Great"
-          subtitle="Have a question or want to work together? We'd love to hear from you."
+          title={text("contact.title")}
+          subtitle={text("contact.subtitle")}
         />
 
         <div className="mt-14 grid gap-6 lg:grid-cols-5">

@@ -12,6 +12,8 @@ import Approach from "./components/Approach";
 import Values from "./components/Values";
 import MissionVision from "./components/MissionVision";
 import Philosophy from "./components/Philosophy";
+import Projects from "./components/Projects";
+import AdminTrigger from "./components/admin/AdminTrigger";
 import Contact from "./components/Contact";
 import Footer from "./components/Footer";
 
@@ -40,6 +42,7 @@ function App() {
         <Services />
         <Stats />
         <Team />
+        <Projects />
         <Approach />
         <Values />
         <MissionVision />
@@ -47,6 +50,7 @@ function App() {
         <Contact />
       </main>
       <Footer />
+      <AdminTrigger />
     </>
   );
 }

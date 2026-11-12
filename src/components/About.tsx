@@ -2,6 +2,7 @@ import { Layers, GitMerge, Sparkles } from "lucide-react";
 import Reveal from "./ui/Reveal";
 import GlassPanel from "./ui/GlassPanel";
 import SectionHeading from "./ui/SectionHeading";
+import { useSite } from "../context/SiteContent";
 
 const pillars = [
   {
@@ -24,13 +25,14 @@ const pillars = [
 const equation = ["Software", "Hardware", "Data", "Connectivity", "AI", "Automation"];
 
 export default function About() {
+  const { text } = useSite();
   return (
     <section id="about" className="px-4 py-24 sm:px-6">
       <div className="mx-auto max-w-6xl">
         <SectionHeading
           eyebrow="About Syncore"
-          title="Technology built around purpose, integration, and innovation."
-          subtitle="Syncore Technologies brings different technological disciplines together to create connected, intelligent, practical, and reliable digital solutions."
+          title={text("about.title")}
+          subtitle={text("about.subtitle")}
         />
 
         <div className="mt-14 grid gap-5 sm:grid-cols-3">
