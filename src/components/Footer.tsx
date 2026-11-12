@@ -1,6 +1,7 @@
 import { Mail } from "lucide-react";
 import logo from "../assets/logo.png";
 import GlassPanel from "./ui/GlassPanel";
+import AdminTrigger from "./admin/AdminTrigger";
 import { useSite } from "../context/SiteContent";
 import { companyEmail, footerLinks } from "../data/content";
 
@@ -85,8 +86,11 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="mt-10 border-t border-white/10 pt-6 text-center text-xs text-silver-500">
-          © {year} Syncore Technologies. All rights reserved.
+        <div className="mt-10 flex items-center gap-4 border-t border-white/10 pt-6 text-xs text-silver-500">
+          <AdminTrigger />
+          <span className="flex-1 pr-12 text-center">
+            © {year} Syncore Technologies. All rights reserved.
+          </span>
         </div>
       </GlassPanel>
     </footer>

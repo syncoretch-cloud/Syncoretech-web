@@ -13,7 +13,6 @@ import Values from "./components/Values";
 import MissionVision from "./components/MissionVision";
 import Philosophy from "./components/Philosophy";
 import Projects from "./components/Projects";
-import AdminTrigger from "./components/admin/AdminTrigger";
 import Contact from "./components/Contact";
 import Footer from "./components/Footer";
 
@@ -50,7 +49,6 @@ function App() {
         <Contact />
       </main>
       <Footer />
-      <AdminTrigger />
     </>
   );
 }

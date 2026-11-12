@@ -27,9 +27,9 @@ export default function AdminTrigger() {
         type="button"
         aria-label="Admin"
         onContextMenu={onContext}
-        className="fixed bottom-3 left-3 z-40 flex h-7 w-7 items-center justify-center rounded-full text-silver-500 opacity-20 transition-opacity hover:opacity-60"
+        className="flex h-8 w-8 items-center justify-center rounded-full border border-white/10 text-silver-400 opacity-50 transition-opacity hover:opacity-100"
       >
-        <Lock className="h-3.5 w-3.5" />
+        <Lock className="h-4 w-4" />
       </button>
       {open && (isAdmin ? <AdminPanel onClose={() => setOpen(false)} /> : <AdminLogin onClose={() => setOpen(false)} />)}
     </>
