@@ -27,7 +27,7 @@ export default function AdminTrigger() {
         type="button"
         aria-label="Admin"
         onContextMenu={onContext}
-        className="flex h-8 w-8 items-center justify-center rounded-full border border-white/10 text-silver-400 opacity-50 transition-opacity hover:opacity-100"
+        className="flex h-8 w-8 items-center justify-center rounded-full bg-silver-300 text-black opacity-70 transition-opacity hover:opacity-100"
       >
         <Lock className="h-4 w-4" />
       </button>
